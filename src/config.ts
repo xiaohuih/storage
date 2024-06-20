@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 import jwt from 'jsonwebtoken'
 
-export type StorageBackendType = 'file' | 's3'
+export type StorageBackendType = 'file' | 's3' | 'alioss'
 export enum MultitenantMigrationStrategy {
   PROGRESSIVE = 'progressive',
   ON_REQUEST = 'on_request',
@@ -24,6 +24,11 @@ type StorageConfigType = {
   storageS3Endpoint?: string
   storageS3ForcePathStyle?: boolean
   storageS3Region: string
+  storageAliossAccessKeyId?: string, 
+  storageAliossAccessKeySecret?: string, 
+  storageAliossEndpoint?: string, 
+  storageAliossRegion?: string, 
+  storageAliossBucket?: string,
   isMultitenant: boolean
   jwtSecret: string
   jwtAlgorithm: string
@@ -256,6 +261,13 @@ export function getConfig(options?: { reload?: boolean }): StorageConfigType {
       getOptionalConfigFromEnv('STORAGE_S3_FORCE_PATH_STYLE', 'GLOBAL_S3_FORCE_PATH_STYLE') ===
       'true',
     storageS3Region: getOptionalConfigFromEnv('STORAGE_S3_REGION', 'REGION') as string,
+    
+    // Storage - Alioss
+    storageAliossAccessKeyId: getOptionalConfigFromEnv('STORAGE_ALIOSS_ACCESS_KEY_ID'),
+    storageAliossAccessKeySecret: getOptionalConfigFromEnv('STORAGE_ALIOSS_ACCESS_KEY_SECRET'),
+    storageAliossEndpoint: getOptionalConfigFromEnv('STORAGE_ALIOSS_ENDPOINT'),
+    storageAliossRegion: getOptionalConfigFromEnv('STORAGE_ALIOSS_REGION'),
+    storageAliossBucket: getOptionalConfigFromEnv('STORAGE_ALIOSS_BUCKET'),
 
     // DB - Migrations
     dbAnonRole: getOptionalConfigFromEnv('DB_ANON_ROLE') || 'anon',
