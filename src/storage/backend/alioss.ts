@@ -62,12 +62,12 @@ export class AliossBackend implements StorageBackendAdapter {
 
     return {
       metadata: {
-        cacheControl: 'no-cache',
-        mimetype: resHeaders["Content-Type"] || 'application/octa-stream',
-        eTag: resHeaders["ETag"] || '',
-        lastModified: resHeaders["Last-Modified"],
-        contentRange: resHeaders["Content-Range"],
-        contentLength: resHeaders["Content-Length"] || 0,
+        cacheControl: resHeaders["cache-control"] || 'no-cache',
+        mimetype: resHeaders["content-type"] || 'application/octa-stream',
+        eTag: resHeaders["etag"] || '',
+        lastModified: resHeaders["last-modified"] && new Date(resHeaders["last-modified"]),
+        contentRange: resHeaders["content-range"],
+        contentLength: resHeaders["content-length"] || 0,
         httpStatusCode: data.res.status || 200,
         size: data.res.size || 0,
       },
@@ -201,12 +201,12 @@ export class AliossBackend implements StorageBackendAdapter {
       )
       const resHeaders = data.res.headers as any
       return {
-        cacheControl: 'no-cache',
-        mimetype: resHeaders["Content-Type"] || 'application/octa-stream',
-        eTag: resHeaders["ETag"] || '',
-        lastModified: resHeaders["Last-Modified"],
-        contentRange: resHeaders["Content-Range"],
-        contentLength: resHeaders["Content-Length"] || 0,
+        cacheControl: resHeaders["cache-control"] || 'no-cache',
+        mimetype: resHeaders["content-type"] || 'application/octa-stream',
+        eTag: resHeaders["etag"] || '',
+        lastModified: resHeaders["last-modified"] && new Date(resHeaders["last-modified"]),
+        contentRange: resHeaders["content-range"],
+        contentLength: resHeaders["content-length"] || 0,
         httpStatusCode: data.res.status || 200,
         size: data.res.size || 0
       }
@@ -333,7 +333,7 @@ export class AliossBackend implements StorageBackendAdapter {
     const resHeaders = data.res.headers as any
     return {
       eTag: data.etag,
-      lastModified: resHeaders["Last-Modified"],
+      lastModified: resHeaders["last-modified"] && new Date(resHeaders["last-modified"]),
     }
   }
 }
